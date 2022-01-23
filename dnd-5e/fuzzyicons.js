@@ -23,8 +23,6 @@ async function updateGameItems() {
     }
 }
 
-
-
 async function walk(dir) {
     let filesFound = []
     data = await FilePicker.browse('public', dir, { extensions: ['.webp'] });
@@ -36,13 +34,11 @@ async function walk(dir) {
 }
 
 async function compareAndUpdate(item, choices) {
-
     let best = {
         path: '',
         value: 0,
         item: item.name
     }
-    //console.log(choices)
     for (let i = 0; i < choices.length; i++) {
         let filename = choices[i].match(/[ \w-]+?(?=\.)/g)
         let ratio = longestCommonSubstring(item.name, filename).length
