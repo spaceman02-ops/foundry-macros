@@ -36,7 +36,7 @@ window.myFunction = function () {
 
 window.importPowerFromAPI = async function (id) {
     const response = await window.fetch(
-        `https://b705-99-131-6-209.ngrok.io/powers/${id}`,
+        `https://897e-99-131-6-209.ngrok.io/powers/${id}`,
         { headers: { "Content-Type": "application/json" }, method: "GET" }
     );
     const power = await response.json();
@@ -47,7 +47,7 @@ window.importPowerFromAPI = async function (id) {
 
 async function getIndexes() {
     const response = await window.fetch(
-        "https://b705-99-131-6-209.ngrok.io/powers/indexes",
+        "https://897e-99-131-6-209.ngrok.io/powers/indexes",
         { headers: { "Content-Type": "application/json" }, method: "GET" }
     );
     let indexes = await response.json();
