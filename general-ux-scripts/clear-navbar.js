@@ -1,5 +1,9 @@
 async function clearNav() {
   let scenes = Array.from(game.scenes);
-  await scenes.forEach((i) => i.update({ navigation: false }));
+  scenes.forEach(async (i) => {
+    if (!i.data.active) {
+      await i.update({ navigation: false });
+    }
+  })
 }
 clearNav();
