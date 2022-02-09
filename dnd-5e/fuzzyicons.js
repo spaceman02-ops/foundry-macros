@@ -1,18 +1,12 @@
-updateActor();
 async function updateActor() {
-    let choices = await walk("icons/skills");
-    choices = choices.concat(...(await walk("icons/magic")));
+    console.log("ran");
+    let choices = await walk("icons");
     for (let actor of game.actors.contents) {
-
-        if (actor.data.folder !== "lkg0y8uoLxSM7rRV") {
-            continue;
-        }
-        console.log(actor.name);
-        for (let item of actor.data.items.contents) {
-            console.log(item);
-            await compareAndUpdate(item, choices);
-            await item.update({ img: 'icons/magic/death/projectile-skull-fire-purple.webp' });
-
+        if (actor.data.folder == game.folders.getName("The Tactics").id) {
+            for (let item of actor.data.items.contents) {
+                console.log(item);
+                await compareAndUpdate(item, choices);
+            }
         }
     }
 }
@@ -33,6 +27,7 @@ async function updateGameItems() {
 }
 
 async function walk(dir) {
+    console.log("ran");
     let filesFound = [];
     data = await FilePicker.browse("public", dir, { extensions: [".webp"] });
     filesFound.push(...data.files);
@@ -43,21 +38,20 @@ async function walk(dir) {
 }
 
 async function compareAndUpdate(item, choices) {
+    console.log("ran");
     let best = {
         path: "",
         value: 0,
         item: item.data.name,
     };
 
-
     for (let i = 0; i < choices.length; i++) {
         let filename = choices[i].match(/[ \w-]+?(?=\.)/g);
-        console.log(filename)
         let ratio = longestCommonSubstring(item.data.name, filename[0]);
 
         if (ratio.length > best.value) {
-            best.path = choices[i]
-            best.value = ratio;
+            best.path = choices[i];
+            best.value = ratio.length;
         }
     }
     console.log(best);
@@ -110,6 +104,6 @@ function longestCommonSubstring(string1, string2) {
         longestSubstringRow -= 1;
         longestSubstringColumn -= 1;
     }
-    console.log(longestSubstring)
     return longestSubstring;
 }
+updateActor();
