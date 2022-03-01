@@ -1,16 +1,21 @@
 async function updateActor() {
-    console.log("ran");
     let choices = await walk("icons");
     for (let actor of game.actors.contents) {
         if (actor.data.folder == game.folders.getName("The Tactics").id) {
             for (let item of actor.data.items.contents) {
-                console.log(item);
                 await compareAndUpdate(item, choices);
             }
         }
     }
 }
 
+async function selectedToken() {
+    let choices = await walk("icons/commodities");
+    let actor = canvas.tokens.controlled[0].actor;
+    for (let item of actor.data.items.contents) {
+        await compareAndUpdate(item, choices);
+    }
+}
 async function updateMacroImages() {
     let choices = await walk("icons/skills");
     choices = choices.concat(...(await walk("icons/magic")));
@@ -106,4 +111,5 @@ function longestCommonSubstring(string1, string2) {
     }
     return longestSubstring;
 }
-updateActor();
+
+selectedToken();
