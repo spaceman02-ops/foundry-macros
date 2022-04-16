@@ -1,15 +1,15 @@
 module.exports = {
-  env: {
-    browser: true,
-    es2021: true,
-  },
-  extends: [
-    'airbnb-base',
-  ],
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-  },
+  extends: ['wesbos'],
   rules: {
+    'no-console': 2,
+    'prettier/prettier': [
+      'error',
+      {
+        trailingComma: 'es5',
+        singleQuote: true,
+        printWidth: 120,
+        tabWidth: 8,
+      },
+    ],
   },
 };
