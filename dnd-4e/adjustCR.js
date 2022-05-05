@@ -34,16 +34,16 @@ for (const actor of game.actors.filter((i) => game.folders.getName(folderName).d
     },
   }
   const bruteDamage = {
-    damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d6 + ${level}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*6 + ${level}`
+    damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d10 + ${level}`,
+    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${level}`
   }
   const standardDamage = {
     damage: `${Math.ceil(level / 5)}d6 + ${level}`,
     crit: `${Math.ceil(level / 5)}*6 + ${level}`,
   }
   const encounterDamage = {
-    damage: `${Math.floor(Math.ceil(level / 5) * 2)}d6 + ${level}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*6 + ${level}`
+    damage: `${Math.floor(Math.ceil(level / 5) * 2)}d8 + ${level}`,
+    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${level}`
   }
 
   let { damage, crit } = standardDamage
@@ -79,7 +79,7 @@ for (const actor of game.actors.filter((i) => game.folders.getName(folderName).d
   await actor.update(updates);
 
   for (const item of actor.data.items) {
-    if (item.data.data.useType === "encounter") {
+    if (item.data.data.useType === "encounter" || item.data.data.useType === "recharge") {
       damage = encounterDamage.damage
       crit = encounterDamage.crit
     }
