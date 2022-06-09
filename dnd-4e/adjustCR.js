@@ -1,12 +1,18 @@
 //MM3 on a business card
-const folderName = '';
+const folderName = "";
 const desiredCR = 0;
-for (const actor of game.actors.filter((i) => game.folders.getName(folderName).data._id === i.data.folder)) {
+const workingFolder = game.folder.getName(folderName);
+const actors = game.actors.filter(
+  (i) => workingFolder.data._id === i.data.folder
+);
+
+for (const actor of actors) {
   let level = actor.data.data.details.level;
   if (level !== desiredCR) {
     level = desiredCR;
-    actor.update({ 'data.details.level': level });
+    actor.update({ "data.details.level": level });
   }
+
   const mobTypes = {
     brute: {
       hp: 26 + 10 * level,
@@ -32,64 +38,72 @@ for (const actor of game.actors.filter((i) => game.folders.getName(folderName).d
       hp: 21 + 6 * level,
       ac: 14 + 1 * level,
     },
+  };
+
+  let { hp, ac } =
+    mobTypes[actor.data.data.details.role.primary] || mobTypes.controller;
+
+  switch (actor.data.data.details.role.secondary) {
+    case "elite":
+      hp = hp * 2;
+      break;
+    case "solo":
+      hp = hp * 4;
+      break;
+    case "minion":
+      hp = 1;
+      damage, (crit = Math.floor(4 + level / 2));
+      break;
   }
+
+  const defs = 12 + level;
+  const updates = {
+    "data.attributes.hp.max": hp,
+    "data.attributes.hp.min": hp,
+    "data.attributes.hp.max": hp,
+    "data.attributes.hp.starting": hp,
+    "data.attributes.hp.value": hp,
+    "data.defences.ac.base": ac,
+    "data.defences.fort.base": defs,
+    "data.defences.ref.base": defs,
+    "data.defences.wil.base": defs,
+  };
+
+  await actor.update(updates);
+
   const bruteDamage = {
     damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d10 + ${level}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${level}`
-  }
+    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${level}`,
+  };
   const standardDamage = {
     damage: `${Math.ceil(level / 5)}d6 + ${level}`,
     crit: `${Math.ceil(level / 5)}*6 + ${level}`,
-  }
+  };
   const encounterDamage = {
     damage: `${Math.floor(Math.ceil(level / 5) * 2)}d8 + ${level}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${level}`
-  }
-
-  let { damage, crit } = standardDamage
-  if (actor.data.data.details.role.primary === 'brute') {
-    damage = bruteDamage.damage;
-    crit = bruteDamage.crit
-  }
-  let { hp, ac } = mobTypes[actor.data.data.details.role.primary] || mobTypes.controller
-  switch (actor.data.data.details.role.secondary) {
-    case 'elite':
-      hp = hp * 2
-      break
-    case 'solo':
-      hp = hp * 4
-      break
-    case 'minion':
-      hp = 1
-      damage, crit = Math.floor(4 + level / 2)
-      break
-  }
-  const defs = 12 + level;
-  const updates = {
-    'data.attributes.hp.max': hp,
-    'data.attributes.hp.min': hp,
-    'data.attributes.hp.max': hp,
-    'data.attributes.hp.starting': hp,
-    'data.attributes.hp.value': hp,
-    'data.defences.ac.base': ac,
-    'data.defences.fort.base': defs,
-    'data.defences.ref.base': defs,
-    'data.defences.wil.base': defs,
+    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${level}`,
   };
-  await actor.update(updates);
 
+  let { damage, crit } = standardDamage;
+
+  if (actor.data.data.details.role.primary === "brute") {
+    damage = bruteDamage.damage;
+    crit = bruteDamage.crit;
+  }
   for (const item of actor.data.items) {
-    if (item.data.data.useType === "encounter" || item.data.data.useType === "recharge") {
-      damage = encounterDamage.damage
-      crit = encounterDamage.crit
+    if (
+      item.data.data.useType === "encounter" ||
+      item.data.data.useType === "recharge"
+    ) {
+      damage = encounterDamage.damage;
+      crit = encounterDamage.crit;
     }
     const itemupdates = {
-      'data.attack.formula': `${5 + level}`,
-      'data.hit.base': `${5 + level}`,
-      'data.hit.formula': damage,
-      'data.hit.critFormula': crit
+      "data.attack.formula": `${5 + level}`,
+      "data.hit.base": `${5 + level}`,
+      "data.hit.formula": damage,
+      "data.hit.critFormula": crit,
     };
     await item.update(itemupdates);
   }
 }
-
