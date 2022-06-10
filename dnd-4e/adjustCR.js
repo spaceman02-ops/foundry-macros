@@ -43,6 +43,21 @@ for (const actor of actors) {
   let { hp, ac } =
     mobTypes[actor.data.data.details.role.primary] || mobTypes.controller;
 
+  const bruteDamage = {
+    damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d10 + ${Math.ceil(level*1.5)}`,
+    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${Math.ceil(level*1.5)}`,
+  };
+  const standardDamage = {
+    damage: `${Math.ceil(level / 5)}d6 + ${Math.ceil(level*1.5)}`,
+    crit: `${Math.ceil(level / 5)}*6 + ${Math.ceil(level*1.5)}`,
+  };
+  const encounterDamage = {
+    damage: `${Math.floor(Math.ceil(level / 5) * 2)}d8 + ${Math.ceil(level*1.5)}`,
+    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${Math.ceil(level*1.5)}`,
+  };
+
+  let { damage, crit } = standardDamage;
+
   switch (actor.data.data.details.role.secondary) {
     case "elite":
       hp = hp * 2;
@@ -52,7 +67,7 @@ for (const actor of actors) {
       break;
     case "minion":
       hp = 1;
-      damage, (crit = Math.floor(4 + level / 2));
+      damage, crit = Math.floor(4 + level / 2);
       break;
   }
 
@@ -71,20 +86,6 @@ for (const actor of actors) {
 
   await actor.update(updates);
 
-  const bruteDamage = {
-    damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d10 + ${Math.ceil(level*1.5)}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${Math.ceil(level*1.5)}`,
-  };
-  const standardDamage = {
-    damage: `${Math.ceil(level / 5)}d6 + ${Math.ceil(level*1.5)}`,
-    crit: `${Math.ceil(level / 5)}*6 + ${Math.ceil(level*1.5)}`,
-  };
-  const encounterDamage = {
-    damage: `${Math.floor(Math.ceil(level / 5) * 2)}d8 + ${Math.ceil(level*1.5)}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${Math.ceil(level*1.5)}`,
-  };
-
-  let { damage, crit } = standardDamage;
 
   if (actor.data.data.details.role.primary === "brute") {
     damage = bruteDamage.damage;
