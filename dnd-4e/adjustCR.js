@@ -15,28 +15,28 @@ for (const actor of actors) {
 
   const mobTypes = {
     brute: {
-      hp: 26 + 10 * level,
-      ac: 12 + 1 * level,
+      hp: Math.floor(26 + 10 * level*.75),
+      ac: Math.floor(12 + 1 * level*.75),
     },
     skirmisher: {
-      hp: 24 + 8 * level,
-      ac: 14 + 1 * level,
+      hp: Math.floor(24 + 8 * level*.75),
+      ac: Math.floor(14 + 1 * level*.75),
     },
     soldier: {
-      hp: 24 + 8 * level,
-      ac: 16 + 1 * level,
+      hp: Math.floor(24 + 8 * level*.75),
+      ac: Math.floor(16 + 1 * level*.75),
     },
     controller: {
-      hp: 24 + 8 * level,
-      ac: 14 + 1 * level,
+      hp: Math.floor(24 + 8 * level*.75),
+      ac: Math.floor(14 + 1 * level*.75),
     },
     artillery: {
-      hp: 21 + 6 * level,
-      ac: 12 + 1 * level,
+      hp: Math.floor(21 + 6 * level*.75),
+      ac: Math.floor(12 + 1 * level*.75),
     },
     lurker: {
-      hp: 21 + 6 * level,
-      ac: 14 + 1 * level,
+      hp: Math.floor(21 + 6 * level*.75),
+      ac: Math.floor(14 + 1 * level*.75),
     },
   };
 
@@ -56,7 +56,7 @@ for (const actor of actors) {
       break;
   }
 
-  const defs = 12 + level;
+  const defs = 10 + level;
   const updates = {
     "data.attributes.hp.max": hp,
     "data.attributes.hp.min": hp,
@@ -72,16 +72,16 @@ for (const actor of actors) {
   await actor.update(updates);
 
   const bruteDamage = {
-    damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d10 + ${level}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${level}`,
+    damage: `${Math.floor(Math.ceil(level / 5) * 1.4)}d10 + ${Math.ceil(level*1.5)}`,
+    crit: `${Math.floor(Math.ceil(level / 5) * 1.4)}*10 + ${Math.ceil(level*1.5)}`,
   };
   const standardDamage = {
-    damage: `${Math.ceil(level / 5)}d6 + ${level}`,
-    crit: `${Math.ceil(level / 5)}*6 + ${level}`,
+    damage: `${Math.ceil(level / 5)}d6 + ${Math.ceil(level*1.5)}`,
+    crit: `${Math.ceil(level / 5)}*6 + ${Math.ceil(level*1.5)}`,
   };
   const encounterDamage = {
-    damage: `${Math.floor(Math.ceil(level / 5) * 2)}d8 + ${level}`,
-    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${level}`,
+    damage: `${Math.floor(Math.ceil(level / 5) * 2)}d8 + ${Math.ceil(level*1.5)}`,
+    crit: `${Math.floor(Math.ceil(level / 5) * 2)}*8 + ${Math.ceil(level*1.5)}`,
   };
 
   let { damage, crit } = standardDamage;
