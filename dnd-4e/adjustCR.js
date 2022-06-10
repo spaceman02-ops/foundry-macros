@@ -1,7 +1,7 @@
 //MM3 on a business card
 const folderName = "";
 const desiredCR = 0;
-const workingFolder = game.folder.getName(folderName);
+const workingFolder = game.folders.getName(folderName);
 const actors = game.actors.filter(
   (i) => workingFolder.data._id === i.data.folder
 );
